@@ -40,10 +40,10 @@
 import numpy as np
 import copy
 from math import *
-from Yin import *
-from YinUtil import RMS
-from MonoPitch import MonoPitch
-from MonoNote import MonoNote
+from .Yin import *
+from .YinUtil import RMS
+from .MonoPitch import MonoPitch
+from .MonoNote import MonoNote
 
 class Feature(object):
     def __init__(self):
@@ -236,7 +236,9 @@ class PyinMain(object):
                 temp += [[tempPitch, 0.9]]
             smoothedPitch += [temp]
 
+        print(smoothedPitch)
         mnOut = mn.process(smoothedPitch)
+        print('3')
 
         self.fs.m_oMonoNoteOut = mnOut
 
@@ -252,7 +254,10 @@ class PyinMain(object):
         minNoteFrames = (self.m_inputSampleRate*self.m_pruneThresh)/self.m_stepSize
 
         notePitchTrack = np.array([], dtype=np.float32) # collects pitches for one note at a time
+
+        print(nFrame)
         for iFrame in range(nFrame):
+            print(iFrame)
             isVoiced = mnOut[iFrame].noteState < 3 \
             and len(smoothedPitch[iFrame]) > 0 \
             and (iFrame >= nFrame-2 or (self.m_level[iFrame]/self.m_level[iFrame+2]>self.m_onsetSensitivity))

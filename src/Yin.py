@@ -39,7 +39,7 @@
 
 import numpy as np
 from math import *
-import YinUtil
+from .YinUtil import *
 
 class Yin(object):
 
@@ -72,16 +72,16 @@ class Yin(object):
 
         # calculate aperiodicity function for all periods, output stores in yinBuffer
         if self.m_fast:
-            yinBuffer = YinUtil.fastDifference(input, self.m_yinBufferSize)
+            yinBuffer = fastDifference(input, self.m_yinBufferSize)
         else:
-            yinBuffer = YinUtil.slowDifference(input, self.m_yinBufferSize)
+            yinBuffer = slowDifference(input, self.m_yinBufferSize)
 
-        yinBuffer = YinUtil.cumulativeDifference(yinBuffer ,self.m_yinBufferSize)
+        yinBuffer = cumulativeDifference(yinBuffer ,self.m_yinBufferSize)
 
-        peakProbability = YinUtil.yinProb(yinBuffer, self.m_threshDistr, self.m_yinBufferSize, 0, 0)
+        peakProbability = yinProb(yinBuffer, self.m_threshDistr, self.m_yinBufferSize, 0, 0)
 
         # calculate overall "probability" from peak probability, overall "probability" probSum seems never be used
-        rms = sqrt(YinUtil.sumSquare(input, 0, self.m_yinBufferSize)/self.m_yinBufferSize)
+        rms = sqrt(sumSquare(input, 0, self.m_yinBufferSize)/self.m_yinBufferSize)
         yo = Yin.YinOutput(0.0, 0.0, rms)
 
         firstStack = False
@@ -90,7 +90,7 @@ class Yin(object):
 
             # if peakProb > 0, a fundamental frequency candidate is generated
             if peakProbability[iBuf] > 0:
-                currentF0 = self.m_inputSampleRate * (1.0 / YinUtil.parabolicInterpolation(yinBuffer, iBuf, self.m_yinBufferSize))
+                currentF0 = self.m_inputSampleRate * (1.0 / parabolicInterpolation(yinBuffer, iBuf, self.m_yinBufferSize))
                 if firstStack == False:
                     yo.freqProb = np.array([np.array([currentF0, peakProbability[iBuf]], dtype=np.float64),])
                     firstStack = True

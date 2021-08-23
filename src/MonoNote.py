@@ -37,10 +37,12 @@
  * Music Notation and Representation, 2015.
 '''
 
-from MonoNoteHMM import MonoNoteHMM
-from MonoNoteParameters import MonoNoteParameters
+from .MonoNoteHMM import MonoNoteHMM
+from .MonoNoteParameters import MonoNoteParameters
 import numpy as np
 import time
+import tqdm
+from progressbar import progressbar
 
 
 class FrameOutput(object):
@@ -56,10 +58,11 @@ class MonoNote(object):
 
     def process(self, pitchProb):
         obsProb = [self.hmm.calculatedObsProb(pitchProb[0]), ]
-        for iFrame in range(1, len(pitchProb)):
+        for iFrame in progressbar(range(1, len(pitchProb))):
             obsProb += [self.hmm.calculatedObsProb(pitchProb[iFrame])]
         out = []
 
+        print('probs')
         path, scale = self.hmm.decodeViterbi(obsProb)
 
         for iFrame in range(len(path)):

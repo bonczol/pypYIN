@@ -38,8 +38,8 @@
 '''
 
 import numpy as np
-from SparseHMM import SparseHMM
-from MonoNoteParameters import MonoNoteParameters
+from .SparseHMM import SparseHMM
+from .MonoNoteParameters import MonoNoteParameters
 from math import *
 from scipy.stats import norm
 
@@ -52,7 +52,6 @@ class MonoNoteHMM(SparseHMM):
 
     def calculatedObsProb(self, pitchProb):
         # pitchProb is a list of pairs (pitches and their probabilities)
-
         nCandidate = len(pitchProb)
 
         # what is the probability of pitched

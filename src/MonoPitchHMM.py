@@ -37,7 +37,7 @@
  * Music Notation and Representation, 2015.
 '''
 
-from SparseHMM import SparseHMM
+from .SparseHMM import SparseHMM
 from math import *
 import numpy as np
 
